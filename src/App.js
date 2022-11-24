@@ -1,5 +1,6 @@
 // INSTALL universal-cookie and body-scroll-lock
 import React from 'react'
+// ADD THE CSS LINES TO YOUR CSS FILE
 import './App.css';
 import Cookies from 'universal-cookie';
  import Popup from './components/Popup'
