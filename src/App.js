@@ -41,7 +41,6 @@ function App() {
       </Route>
       */}
       <Privacy/>
-      <div style={{height: '900px'}}></div>
     </div>
   );
 }
