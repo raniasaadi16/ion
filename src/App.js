@@ -1,23 +1,46 @@
-import logo from './logo.svg';
+// INSTALL universal-cookie and body-scroll-lock
+import React from 'react'
 import './App.css';
+import Cookies from 'universal-cookie';
+ import Popup from './components/Popup'
+import { useEffect, useState } from 'react';
+import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+import Privacy from './components/pages/Privacy';
 
 function App() {
+  const [showPopup, setshowPopup] = useState(false);
+  const cookies = new Cookies();
+  const targetRef = React.createRef();
+  let targetElement = null;
+
+  useEffect(() => {
+    targetElement = targetRef.current;
+  }, []);
+  useEffect(() => {
+    if(!cookies.get('cookieBanner')){
+      setshowPopup(true)
+      if(targetElement){
+        disableBodyScroll(targetElement)
+      }
+    }
+    
+  }, [cookies, targetElement]);
+ 
+  const removePopup = () => {
+    cookies.set('cookieBanner', 'closed')
+    setshowPopup(false)
+    clearAllBodyScrollLocks();
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App" ref={targetRef}>
+      {showPopup && <Popup removePopup={removePopup}/>}
+      {/* replace <Privacy/> with 
+      <Route exact path="/privacy">
+        <Privacy />
+      </Route>
+      */}
+      <Privacy/>
+      <div style={{height: '900px'}}></div>
     </div>
   );
 }
